@@ -2,8 +2,13 @@ import numpy as np
 import cv2 as cv
 from matplotlib import pyplot as plt
 
-img = cv.imread("C:\\Users\\wonwoo\\Downloads\\room.jpg", cv.IMREAD_GRAYSCALE)
+img = cv.imread("D:\\Downloads\\room.jpg", cv.IMREAD_GRAYSCALE)
 img = cv.resize(img, dsize=(640, 480), interpolation=cv.INTER_AREA)
+height, width = img.shape
+
+for i in range(0,height,5):
+    cv.line(img,(0,i),(width-1,i),(0,0,0),1)
+
 if img is None:
     print('Error opening image')
 
@@ -27,7 +32,6 @@ cv.log(magI, magI)
 
 # non crop = fourier spectrum
 # crop = shifted spectrum
-'''
 magI_rows, magI_cols = magI.shape
 # crop the spectrum, if it has an odd number of rows or columns
 magI = magI[0:(magI_rows & -2), 0:(magI_cols & -2)]
@@ -43,7 +47,6 @@ magI[cx:cx + cx, cy:cy + cy] = tmp
 tmp = np.copy(q1)  # swap quadrant (Top-Right with Bottom-Left)
 magI[cx:cx + cx, 0:cy] = q2
 magI[0:cx, cy:cy + cy] = tmp
-'''
 
 cv.normalize(magI, magI, 0, 1, cv.NORM_MINMAX)  # Transform the matrix with float values into a
 
