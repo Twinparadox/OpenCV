@@ -8,8 +8,7 @@ import matplotlib.pyplot as plt
 import pywt
 import pywt.data
 
-img = cv.imread("D:\\Downloads\\room.jpg", cv.IMREAD_GRAYSCALE)
-img = cv.resize(img, dsize=(640, 480), interpolation=cv.INTER_AREA)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+img = pywt.data.camera()
 # Load image
 original = img
 
@@ -19,18 +18,6 @@ titles = ['Approximation', ' Horizontal detail',
 coeffs2 = pywt.dwt2(original, 'bior1.3')
 LL, (LH, HL, HH) = coeffs2
 fig = plt.figure()
-
-LH = cv.normalize(LH,LH,0,1,cv.NORM_MINMAX)
-LH = LH*255
-LH = np.uint8(LH)
-
-HL = cv.normalize(HL,HL,0,1,cv.NORM_MINMAX)
-HL = HL*255
-HL = np.uint8(HL)
-
-HH = cv.normalize(HH,HH,0,1,cv.NORM_MINMAX)
-HH = HH*255
-HH = np.uint8(HH)
 
 winIdx=0
 for i, a in enumerate([LL, LH, HL, HH]):
@@ -54,11 +41,10 @@ axs.imshow(original, interpolation='nearest', cmap=plt.cm.gray)
 axs = fig2.add_subplot(1,2,2)
 axs.set_title('Reconstructed')
 axs.imshow(reconstructed, interpolation="nearest", cmap=plt.cm.gray)
-plt.show()
-
 
 # Check that reconstructed image is close to the original
-#np.testing.assert_allclose(original, reconstructed, atol=1e-13, rtol=1e-13)
+np.testing.assert_allclose(original, reconstructed, atol=1e-13, rtol=1e-13)
+plt.show()
 
 '''
 # Now do the same with dwtn/idwtn, to show the difference in their signatures
